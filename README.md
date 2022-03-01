@@ -3,7 +3,7 @@
 **all** is a set of common functions that I need sometimes.
 
 These functions range from sorting slices and maps to various functional
-programming patterns. Documentation is available on [pkg.go.dev](docs).
+programming patterns. Documentation is available on [pkg.go.dev][docs].
 
 The library is split into mutiple different packages, making it easier to
 only import the ones I need, under a nicer namespace.
