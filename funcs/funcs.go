@@ -8,7 +8,7 @@ func Pipe[T any](fs ...func(T) T) func(T) T {
 	}
 	return func(i T) T {
 		v := i
-		for _, f := range fs[1:] {
+		for _, f := range fs {
 			v = f(v)
 		}
 		return v
