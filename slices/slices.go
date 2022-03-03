@@ -30,6 +30,16 @@ func ContainsComparator[V any](s []V, v V, c func(V, V) bool) bool {
 	return false
 }
 
+func Reverse[V any](s []V) {
+	clone := []V{}
+	Iterate(s, func(v V) {
+		clone = append(clone, v)
+	})
+	MapPairs(s, func(i int, v V) V {
+		return clone[len(s)-i-1]
+	})
+}
+
 // SortDesc sorts the slice in descending order
 func SortDesc[V constraints.Ordered](s []V) {
 	sort.Slice(s, func(i, j int) bool {
