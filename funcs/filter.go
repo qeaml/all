@@ -1,5 +1,11 @@
 package funcs
 
+func Is[T comparable](v T) func(T) bool {
+	return func(t T) bool {
+		return v == t
+	}
+}
+
 // Not returns the opposite of the given function
 func Not[T any](f func(T) bool) func(T) bool {
 	return func(i T) bool {
