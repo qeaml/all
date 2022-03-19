@@ -10,24 +10,13 @@ import (
 // Contains uses the builtin equal operator to check if an element is present
 // in the slice
 func Contains[V comparable](s []V, v V) bool {
-	for _, e := range s {
-		if e == v {
-			return true
-		}
-	}
-	return false
+	return Any(s, func(t V) bool { return t == v })
 }
 
 // ContainsComparator uses the provided comparison function to check if an
 // element is present in the slice
 func ContainsComparator[V any](s []V, v V, c func(V, V) bool) bool {
-	pc := funcs.Partial(v, c)
-	for _, e := range s {
-		if pc(e) {
-			return true
-		}
-	}
-	return false
+	return Any(s, funcs.Partial(v, c))
 }
 
 func Reverse[V any](s []V) {
