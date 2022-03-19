@@ -2,6 +2,8 @@ package funcs
 
 type filter[T any] func(T) bool
 
+// Is returns a predicate that returns true if the value it is given is equal
+// to the predefined value
 func Is[T comparable](v T) filter[T] {
 	return func(t T) bool {
 		return v == t
