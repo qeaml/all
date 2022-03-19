@@ -10,7 +10,7 @@ import (
 // Contains uses the builtin equal operator to check if an element is present
 // in the slice
 func Contains[V comparable](s []V, v V) bool {
-	return Any(s, func(t V) bool { return t == v })
+	return Any(s, funcs.Is(v))
 }
 
 // ContainsComparator uses the provided comparison function to check if an
