@@ -13,6 +13,19 @@ func Isnt[T comparable](v T) filter[T] {
 	return Not(Is(v))
 }
 
+// AnyOf returns a predicate that returns true if the value it is given is equal
+// to any of the predefined values
+func AnyOf[T comparable](s ...T) filter[T] {
+	return func(v T) bool {
+		for _, e := range s {
+			if v == e {
+				return true
+			}
+		}
+		return false
+	}
+}
+
 // Not returns the opposite of the given function
 func Not[T any](f filter[T]) filter[T] {
 	return func(i T) bool {
