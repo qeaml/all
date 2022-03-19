@@ -1,5 +1,7 @@
 package maps
 
+import "github.com/qeaml/all/funcs"
+
 // MapPairs replaces all the values in the map with the return value of the
 // provided function. ALl modifications are done in-place.
 func MapPairs[K comparable, V any](m map[K]V, f func(K, V) V) {
@@ -51,11 +53,11 @@ func IterateKeys[K comparable, V any](m map[K]V, f func(K)) {
 // for which the provided function returned true
 func FilterPairs[K comparable, V any](m map[K]V, f func(K, V) bool) map[K]V {
 	out := map[K]V{}
-	IteratePairs(m, func(k K, v V) {
+	for k, v := range m {
 		if f(k, v) {
 			out[k] = v
 		}
-	})
+	}
 	return out
 }
 
@@ -63,11 +65,11 @@ func FilterPairs[K comparable, V any](m map[K]V, f func(K, V) bool) map[K]V {
 // pair to the provided function
 func FilterValues[K comparable, V any](m map[K]V, f func(V) bool) map[K]V {
 	out := map[K]V{}
-	IteratePairs(m, func(k K, v V) {
+	for k, v := range m {
 		if f(v) {
 			out[k] = v
 		}
-	})
+	}
 	return out
 }
 
@@ -75,10 +77,21 @@ func FilterValues[K comparable, V any](m map[K]V, f func(V) bool) map[K]V {
 // pair to the provided function
 func FilterKeys[K comparable, V any](m map[K]V, f func(K) bool) map[K]V {
 	out := map[K]V{}
-	IteratePairs(m, func(k K, v V) {
+	for k, v := range m {
 		if f(k) {
 			out[k] = v
 		}
-	})
+	}
 	return out
+}
+
+// ContainsKey returns true if the map contains the given key
+func ContainsKey[K comparable, V any](m map[K]V, k K) (ok bool) {
+	_, ok = m[k]
+	return
+}
+
+// ContainsValue returns true if the map contains the given value
+func ContainsValue[K comparable, V comparable](m map[K]V, v V) bool {
+	return len(FilterValues(m, funcs.Is(v))) > 0
 }

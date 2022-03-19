@@ -107,3 +107,11 @@ func TestFilterValues(t *testing.T) {
 	assertEquals(newmap["DOUBLE"], 2)
 	assertEquals(newmap["QUadRUplE"], 4)
 }
+
+func TestContains(t *testing.T) {
+	gt = t
+	assert(ContainsKey(getTestMap(), "Single"))
+	assert(!ContainsKey(getTestMap(), "singular"))
+	assert(ContainsValue(getTestMap(), 10))
+	assert(!ContainsValue(getTestMap(), 1))
+}
