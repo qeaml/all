@@ -8,6 +8,11 @@ func Is[T comparable](v T) filter[T] {
 	}
 }
 
+// Isnt is a shorthand for Not(Is(...))
+func Isnt[T comparable](v T) filter[T] {
+	return Not(Is(v))
+}
+
 // Not returns the opposite of the given function
 func Not[T any](f filter[T]) filter[T] {
 	return func(i T) bool {
