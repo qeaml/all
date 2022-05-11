@@ -85,6 +85,19 @@ func FilterKeys[K comparable, V any](m map[K]V, f func(K) bool) map[K]V {
 	return out
 }
 
+// Filter returns a copy of the provided map with only the entries that the
+// predicate returned true for. In this function the predicate takes no
+// arguments.
+func Filter[K comparable, V any](m map[K]V, f func() bool) map[K]V {
+	out := map[K]V{}
+	for k, v := range m {
+		if f() {
+			out[k] = v
+		}
+	}
+	return out
+}
+
 // ContainsKey returns true if the map contains the given key
 func ContainsKey[K comparable, V any](m map[K]V, k K) (ok bool) {
 	_, ok = m[k]

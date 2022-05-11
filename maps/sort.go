@@ -8,7 +8,7 @@ import (
 
 // Sort returns the provided map sorted by keys using the provided comparison
 // function. The function is the same as in sort.Slice from the standard lib
-func Sort[K generic.Ordered, V any](m map[K]V, c func(keys []K, i, j int) bool) map[K]V {
+func Sort[K comparable, V any](m map[K]V, c func(keys []K, i, j int) bool) map[K]V {
 	keys := []K{}
 	for k := range m {
 		keys = append(keys, k)
@@ -23,16 +23,26 @@ func Sort[K generic.Ordered, V any](m map[K]V, c func(keys []K, i, j int) bool) 
 	return out
 }
 
-// SortDesc returns the provided map sorted by keys in descending order
-func SortDesc[K generic.Ordered, V any](m map[K]V) map[K]V {
+// SortKeys returns the provided map sorted by keys in the provided order
+func SortKeys[K generic.Ordered, V any](m map[K]V, ascending bool) map[K]V {
+	if ascending {
+		return Sort(m, func(keys []K, i, j int) bool {
+			return keys[i] < keys[j]
+		})
+	}
 	return Sort(m, func(keys []K, i, j int) bool {
 		return keys[i] > keys[j]
 	})
 }
 
-// SortAsc returns the provided map sorted by keys in ascending order
-func SortAsc[K generic.Ordered, V any](m map[K]V) map[K]V {
+// SortValues returns the provided map sorted by values in the provided order
+func SortValues[K comparable, V generic.Ordered](m map[K]V, ascending bool) map[K]V {
+	if ascending {
+		return Sort(m, func(keys []K, i, j int) bool {
+			return m[keys[i]] < m[keys[j]]
+		})
+	}
 	return Sort(m, func(keys []K, i, j int) bool {
-		return keys[i] < keys[j]
+		return m[keys[i]] > m[keys[j]]
 	})
 }
