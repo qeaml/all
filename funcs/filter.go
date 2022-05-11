@@ -1,23 +1,23 @@
 package funcs
 
-type filter[T any] func(T) bool
+type predicate[T any] func(T) bool
 
-// Is returns a predicate that returns true if the value it is given is equal
+// Is produces true if the value it is given is equal
 // to the predefined value
-func Is[T comparable](v T) filter[T] {
+func Is[T comparable](v T) predicate[T] {
 	return func(t T) bool {
 		return v == t
 	}
 }
 
 // Isnt is a shorthand for Not(Is(...))
-func Isnt[T comparable](v T) filter[T] {
+func Isnt[T comparable](v T) predicate[T] {
 	return Not(Is(v))
 }
 
-// AnyOf returns a predicate that returns true if the value it is given is equal
+// AnyOf produces true if the value it is given is equal
 // to any of the predefined values
-func AnyOf[T comparable](s ...T) filter[T] {
+func AnyOf[T comparable](s ...T) predicate[T] {
 	return func(v T) bool {
 		for _, e := range s {
 			if v == e {
@@ -28,30 +28,30 @@ func AnyOf[T comparable](s ...T) filter[T] {
 	}
 }
 
-// Not returns the opposite of the given function
-func Not[T any](f filter[T]) filter[T] {
+// Not produces the opposite of the given predicate's output
+func Not[T any](f predicate[T]) predicate[T] {
 	return func(i T) bool {
 		return !f(i)
 	}
 }
 
-// Or returns true if either of the given functions return true
-func Or[T any](f filter[T], g filter[T]) filter[T] {
+// Or produces true if either of the given predicates return true
+func Or[T any](f predicate[T], g predicate[T]) predicate[T] {
 	return func(i T) bool {
 		return f(i) || g(i)
 	}
 }
 
-// And returns true if both of the given functions return true
-func And[T any](f filter[T], g filter[T]) filter[T] {
+// And produces true if both of the given predicates return true
+func And[T any](f predicate[T], g predicate[T]) predicate[T] {
 	return func(i T) bool {
 		return f(i) && g(i)
 	}
 }
 
-// Xor returns true if either of the given functions return true, but returns
+// Xor produces true if either of the given predicates return true, but produces
 // false if both of them are true or both of them are false
-func Xor[T any](f filter[T], g filter[T]) filter[T] {
+func Xor[T any](f predicate[T], g predicate[T]) predicate[T] {
 	return func(i T) bool {
 		fr := f(i)
 		gr := g(i)
@@ -64,8 +64,8 @@ func Xor[T any](f filter[T], g filter[T]) filter[T] {
 	}
 }
 
-// All returns true only if all provided functions return true
-func All[T any](fs ...filter[T]) filter[T] {
+// All produces true only if all provided predicates return true
+func All[T any](fs ...predicate[T]) predicate[T] {
 	return func(i T) bool {
 		for _, f := range fs {
 			if !f(i) {
@@ -76,8 +76,8 @@ func All[T any](fs ...filter[T]) filter[T] {
 	}
 }
 
-// Any returns true only if at least one provided function returns true
-func Any[T any](fs ...filter[T]) filter[T] {
+// Any produces true only if at least one provided predicate produces true
+func Any[T any](fs ...predicate[T]) predicate[T] {
 	return func(i T) bool {
 		for _, f := range fs {
 			if f(i) {
